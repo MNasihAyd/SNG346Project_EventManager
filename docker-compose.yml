@@ -5,9 +5,9 @@ services:
     environment:
       - POSTGRES_USER=sngproject
       - POSTGRES_PASSWORD=mypassword
-      - POSTGRES_DB=eventgate_db
+      - POSTGRES_DB=eventmanager_db
     ports:
-      - "5433:5432"
+      - "5434:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
