@@ -1,0 +1,1 @@
+DATABASE_URL="postgresql://sngproject:mypassword@localhost:5433/eventgate_db?schema=public"
