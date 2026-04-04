@@ -1,0 +1,82 @@
+1) Testing events/route.js:
+	Endpoint: POST http://localhost:3000/api/events
+	Content-Type: application/json
+	Authorization: Bearer <paste jwt token>
+	JSON Body: {
+  "title": "Tech Conference 2026",
+  "description": "A gathering of AI enthusiasts.",
+  "dateTime": "2026-10-15T09:00:00Z",
+  "capacity": 100
+}
+
+used body: 
+{
+  "title": "SealFest 2026",
+  "description": "A gathering of seal enthusiasts.",
+  "dateTime": "2026-10-15T09:00:00Z",
+  "capacity": 100
+}
+
+result: 201
+		Created
+	{
+    "id": "cmnkgaf5d000154wkidzxpbrx",
+    "title": "SealFest 2026",
+    "description": "A gathering of seal enthusiasts.",
+    "dateTime": "2026-10-15T09:00:00.000Z",
+    "capacity": 100,
+    "organiserId": "cmnkfyg5p000054wk3bri1nfe",
+    "createdAt": "2026-04-04T14:51:27.409Z"
+	}
+	
+2) GET all events:
+Endpoint: GET http://localhost:3000/api/events
+This part is public and doesn't call authentication
+
+Result:
+
+[
+    {
+        "id": "cmnkgaf5d000154wkidzxpbrx",
+        "title": "SealFest 2026",
+        "description": "A gathering of seal enthusiasts.",
+        "dateTime": "2026-10-15T09:00:00.000Z",
+        "capacity": 100,
+        "organiserId": "cmnkfyg5p000054wk3bri1nfe",
+        "createdAt": "2026-04-04T14:51:27.409Z"
+    },
+    {
+        "id": "cmnkgdu9z000254wk21g2ysv1",
+        "title": "SealFest 2027",
+        "description": "A gathering of seal enthusiasts.",
+        "dateTime": "2027-10-15T09:00:00.000Z",
+        "capacity": 100,
+        "organiserId": "cmnkfyg5p000054wk3bri1nfe",
+        "createdAt": "2026-04-04T14:54:06.984Z"
+    }
+]
+
+Which means the events are being saved
+
+3) Testing event updates
+
+Endpoint: PUT http://localhost:3000/api/events/{id} (instead of id, we use the id of the event shown in the response of GET
+		which is cmnkgaf5d000154wkidzxpbrx in our case
+sent body: 
+{
+  "capacity": 200
+}
+
+resulting body:
+
+200 OK
+
+{
+    "id": "cmnkgaf5d000154wkidzxpbrx",
+    "title": "SealFest 2026",
+    "description": "A gathering of seal enthusiasts.",
+    "dateTime": "2026-10-15T09:00:00.000Z",
+    "capacity": 200,
+    "organiserId": "cmnkfyg5p000054wk3bri1nfe",
+    "createdAt": "2026-04-04T14:51:27.409Z"
+}
