@@ -1,6 +1,6 @@
 // This file was written by ChatGPT in response to creating a login route for handling user login in a Node.js application using Next.js API routes.
 
-import { login } from '@/controllers/authController';
+import { login } from '../../../../controllers/authController.js';
 
 export async function POST(req) {
   try {
