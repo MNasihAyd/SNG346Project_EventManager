@@ -1,0 +1,57 @@
+//Needed extensions:
+npm install @prisma/adapter-pg pg
+npm install dotenv-cli  
+
+//Open Docker desctop
+
+on bash:
+
+//for reseting
+docker-compose down -v
+
+//starting
+docker-compose up -d
+
+//to see if its running properly
+docker ps
+
+//
+npx prisma db pull
+
+//
+npx prisma migrate dev --name init
+
+//to validate prisma // checking if everything is in order
+npx prisma validate     
+
+//generates db
+npx prisma generate   
+
+//resets db
+npx prisma migrate reset
+
+//populates db
+node prisma/seed.js
+
+//runs
+npm run dev
+
+/*
+URLS to TEST
+*/
+
+http://localhost:3000/api/auth/register
+
+http://localhost:3000/api/auth/login
+
+http://localhost:3000/api/events
+
+http://localhost:3000/api/bookings
+
+| Action       | URL                | Method | Body / Header Needed?       | Result Example       |
+| ------------ | ------------------ | ------ | --------------------------- | -------------------- |
+| Get Events   | /api/events        | GET    | none                        | JSON array of events |
+| Register     | /api/auth/register | POST   | JSON body                   | JSON of user         |
+| Login        | /api/auth/login    | POST   | JSON body                   | JWT token            |
+| Create Event | /api/events        | POST   | JSON + Authorization header | JSON of new event    |
+| Book Event   | /api/bookings      | POST   | JSON + Authorization header | JSON of booking      |
