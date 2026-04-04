@@ -1,5 +1,7 @@
 //This code has parts from Prisma Documentation https://www.prisma.io/docs/orm/prisma-client/queries/crud
 // adapted to our own schema with the help of Gemini
+
+/*
 import prisma from "@/prisma/client";
 
 export const createEvent = async (eventData, organiserId) => {
@@ -87,4 +89,49 @@ export const getAllEvents = async () => {
   return await prisma.event.findMany({
     orderBy: {dateTime: "asc"},
   });
+};
+*/
+
+// This file was written by ChatGPT in response to creating an eventController.js file for handling event-related operations in a Node.js application using Prisma.
+
+import prisma from '../prisma/client.js';
+
+export const getEvents = async () => {
+  return await prisma.event.findMany();
+};
+
+export const getEvent = async (id) => {
+  return await prisma.event.findUnique({ where: { id } });
+};
+
+export const createEvent = async (data, user) => {
+  return await prisma.event.create({
+    data: {
+      ...data,
+      organiserId: user.id
+    }
+  });
+};
+
+export const updateEvent = async (id, data, user) => {
+  const event = await prisma.event.findUnique({ where: { id } });
+
+  if (event.organiserId !== user.id) {
+    throw new Error("Unauthorized");
+  }
+
+  return await prisma.event.update({
+    where: { id },
+    data
+  });
+};
+
+export const deleteEvent = async (id, user) => {
+  const event = await prisma.event.findUnique({ where: { id } });
+
+  if (event.organiserId !== user.id) {
+    throw new Error("Unauthorized");
+  }
+
+  await prisma.event.delete({ where: { id } });
 };
