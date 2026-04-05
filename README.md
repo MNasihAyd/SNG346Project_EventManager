@@ -114,7 +114,7 @@ src/
 ## 1. Clone Repository
 
 ```bash
-git clone <YOUR_REPO_LINK>
+git clone git@github.com:MNasihAyd/SNG346Project_EventManager.git
 ```
 
 ---
