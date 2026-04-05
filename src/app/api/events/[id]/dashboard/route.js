@@ -22,7 +22,8 @@ export async function GET(req, { params }) {
   // Map specific controller errors to standard HTTP status codes
   catch (err) {
     let status = 500;
-    if (err.message === "Unauthorized") status = 403;
+    if (err.message === "Forbidden") status = 403;
+    if (err.message === "Unauthorized") status = 401;
     if (err.message === "Event not found") status = 404;
     
     // Return the error message with the appropriate status code

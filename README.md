@@ -1,3 +1,5 @@
+//This file is improved by: ChatGPT
+
 # Event Manager Backend (SNG346 Project)
 
 ## Team Members
@@ -5,9 +7,9 @@
 * Name: Eray Güler
 * Student ID: 2587343
 * Name: Muhammed Nasih Aydın
-* Student ID:
+* Student ID: 2640324
 * Name: Ata Sancaktar
-* Student ID:
+* Student ID: 2640688
 
 
 ---
@@ -16,7 +18,7 @@
 
 Backend (Part 1):
 
-selected project:
+Selected project:
 
 2.2 Option 2: Event Booking & Ticketing System
 
@@ -52,27 +54,6 @@ src/
 ├── utils/          → Helper functions
 ```
 
-### Key Concepts:
-
-* **Separation of Concerns**
-
-  * Routes → handle HTTP requests
-  * Controllers → handle logic
-  * Prisma → handles database
-
-* **Authentication**
-
-  * JWT tokens are generated on login
-  * Tokens are required for protected routes
-
-* **Authorization**
-
-  * Role-based access:
-
-    * ORGANISER → can create/manage events
-    * ATTENDEE → can book events
-
----
 
 # Database Design
 
