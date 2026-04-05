@@ -53,7 +53,7 @@ src/
 ├── utils/          → Helper functions
 ```
 
-The file structure for the APIs were made according to lecture 6 page 19 of our SNG 346 lecture slides.
+The file structure for the APIs was made according to lecture 6 page 19 of our SNG 346 lecture slides.
 
 
 # Database Design
@@ -88,6 +88,9 @@ The file structure for the APIs were made according to lecture 6 page 19 of our 
 * One User → Many Events (Organiser)
 * One User → Many Bookings
 * One Event → Many Bookings
+
+//Image is only visible at github website
+//ER Diagram
 
 <img width="918" height="818" alt="sng346erd" src="https://github.com/user-attachments/assets/dd96e384-e5c2-460e-ab3d-e9f31fb96f26" />
 
