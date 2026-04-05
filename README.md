@@ -140,7 +140,9 @@ docker-compose up -d
 Create `.env` file in root:
 
 ```env
-DATABASE_URL=postgresql://sngproject:mypassword@localhost:5434/eventmanager_db?schema=public
+DATABASE_URL="postgresql://sngproject:mypassword@localhost:5434/eventmanager_db?schema=public"
+
+JWT_SECRET=supersecret123
 ```
 
 ---
