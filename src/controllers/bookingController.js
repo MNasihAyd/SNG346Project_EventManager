@@ -1,4 +1,5 @@
 //this was written by ChatGPT in response to creating a bookingController.js file for handling event bookings in our project.
+//Booking cancelation is addded as well
 
 import prisma from '../prisma/client.js';
 
@@ -25,4 +26,33 @@ export const createBooking = async (userId, eventId) => {
   return await prisma.booking.create({
     data: { userId, eventId }
   });
+};
+
+
+
+//Cancel a booking for a given event and user
+export const cancelBooking = async (userID, eventId) => {
+  // Check if booking exists
+  const booking = await prisma.booking.findUnique({
+    where: {
+      userId_eventId: { // composite unique key: userId + eventId
+        userId: userID,
+        eventId: eventId
+      }
+    }
+  });
+
+  // Error if no booking found
+  if (!booking) {
+    throw new Error("Booking not found for this user and event");
+  }
+
+  //Delete the booking
+  await prisma.booking.delete({
+    where: {
+      id: booking.id
+    }
+  });
+
+  return { message: "Booking cancelled" };
 };
