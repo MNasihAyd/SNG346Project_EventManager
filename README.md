@@ -89,6 +89,9 @@ The file structure for the APIs was made according to lecture 6 page 19 of our S
 * One User → Many Bookings
 * One Event → Many Bookings
 
+//Image is only visible at github website
+//ER Diagram
+
 <img width="918" height="818" alt="sng346erd" src="https://github.com/user-attachments/assets/dd96e384-e5c2-460e-ab3d-e9f31fb96f26" />
 
 
