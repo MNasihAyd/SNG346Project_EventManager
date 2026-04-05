@@ -158,7 +158,7 @@ npx prisma generate
 ## 6. Run Migrations
 
 ```bash
-npx prisma migrate reset
+npx prisma migrate dev --name init
 ```
 
 ---

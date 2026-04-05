@@ -5,43 +5,106 @@ import prisma from '../src/prisma/client.js';
 import { hashPassword } from '../src/utils/hash.js';
 
 async function main() {
-  //Hashing the password for the test user
   const password = await hashPassword("123456");
 
-  //Creates a test orginizer
-  const organiser = await prisma.user.create({
-    data: {
-      email: "org@test.com",
-      password,
-      name: "Organiser",
-      role: "ORGANISER"
-    }
-  });
+  // Clear existing data (optional but recommended for reset)
+  await prisma.booking.deleteMany();
+  await prisma.event.deleteMany();
+  await prisma.user.deleteMany();
 
-  //Creates a test attendee
-  const attendee = await prisma.user.create({
-    data: {
-      email: "user@test.com",
-      password,
-      name: "User",
-      role: "ATTENDEE"
-    }
-  });
+  // -----------------------------
+  // Create Organisers
+  // -----------------------------
+  const organisers = [];
+  for (let i = 1; i <= 10; i++) {
+    const organiser = await prisma.user.create({
+      data: {
+        email: `organiser${i}@test.com`,
+        password,
+        name: `Organiser ${i}`,
+        role: "ORGANISER",
+      },
+    });
+    organisers.push(organiser);
+  }
 
-  //Creates a test event with the test organizer as the organiser
-  await prisma.event.create({
-    data: {
-      title: "Sample Event",
-      description: "Test event",
-      dateTime: new Date(),
-      capacity: 5,
-      organiserId: organiser.id
-    }
-  });
+  // -----------------------------
+  // Create Attendees
+  // -----------------------------
+  const attendees = [];
+  for (let i = 1; i <= 10; i++) {
+    const attendee = await prisma.user.create({
+      data: {
+        email: `attendee${i}@test.com`,
+        password,
+        name: `Attendee ${i}`,
+        role: "ATTENDEE",
+      },
+    });
+    attendees.push(attendee);
+  }
 
-  //Logs that the seed is completed
-  console.log("Seed completed");
+  // -----------------------------
+  // Create Events
+  // -----------------------------
+  const events = [];
+
+  for (let i = 1; i <= 12; i++) {
+    // Pick a random organiser
+    const randomOrganiser =
+      organisers[Math.floor(Math.random() * organisers.length)];
+
+    const event = await prisma.event.create({
+      data: {
+        title: `Event ${i}`,
+        description: `Description for event ${i}`,
+        dateTime: new Date(Date.now() + i * 86400000), // future dates
+        capacity: 5 + Math.floor(Math.random() * 10),
+        organiserId: randomOrganiser.id,
+      },
+    });
+
+    events.push(event);
+  }
+
+  // -----------------------------
+  // Create Bookings (Attendees join Events)
+  // -----------------------------
+  for (const event of events) {
+    // random number of attendees per event
+    const numberOfBookings = Math.floor(Math.random() * 5);
+
+    // shuffle attendees
+    const shuffled = [...attendees].sort(() => 0.5 - Math.random());
+
+    const selectedAttendees = shuffled.slice(0, numberOfBookings);
+
+    for (const attendee of selectedAttendees) {
+      try {
+        await prisma.booking.create({
+          data: {
+            userId: attendee.id,
+            eventId: event.id,
+          },
+        });
+      } 
+      catch (err) {
+        // ignores duplicate booking errors
+        // so random selection does not fail if an attendee is already booked for the event
+      }
+    }
+  }
+
+  console.log("Seed completed with:");
+  console.log(`- ${organisers.length} organisers`);
+  console.log(`- ${attendees.length} attendees`);
+  console.log(`- ${events.length} events`);
 }
 
-//Runs the main function and catches any errors
-main().catch(console.error);
+main()
+  .catch((e) => {
+    console.error(e);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
