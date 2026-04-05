@@ -9,7 +9,6 @@
 * Name: Ata Sancaktar
 * Student ID:
 
-*(Add other team members if applicable)*
 
 ---
 
