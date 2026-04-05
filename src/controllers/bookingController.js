@@ -1,4 +1,4 @@
-//this was written by ChatGPT in response to creating a bookingController.js file for handling event bookings in our project.
+//Adapted from: ChatGPT in response to creating a bookingController.js file for handling event bookings in our project.
 //Booking cancelation is addded as well
 
 import prisma from '../prisma/client.js';

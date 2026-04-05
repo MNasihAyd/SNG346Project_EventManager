@@ -1,4 +1,4 @@
-//this was written by ChatGPT in response to creating an authMiddleware.js file for handling authentication and authorization in our project.
+//Adapted from: ChatGPT in response to creating an authMiddleware.js file for handling authentication and authorization in our project.
 
 import { verifyToken } from '../utils/jwt.js';
 

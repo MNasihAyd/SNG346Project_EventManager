@@ -1,4 +1,4 @@
-//this was written by ChatGPT in response to creating a validations.js file for handling input validation in our project.
+//Adapted from: ChatGPT in response to creating a validations.js file for handling input validation in our project.
 
 //Validating if user entered all required fields when registering
 export const validateRegister = ({ email, password, name }) => {

@@ -1,4 +1,4 @@
-// This file was written by ChatGPT in response to creating a registration route for handling user registration in our project.
+// Adapted from: ChatGPT in response to creating a registration route for handling user registration in our project.
 
 import { register } from '../../../../controllers/authController.js';
 import { validateRegister } from '../../../../utils/validation.js';

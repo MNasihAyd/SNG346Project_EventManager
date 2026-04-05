@@ -1,4 +1,4 @@
-//this was written by ChatGPT in response to creating a jwt.js file for handling JSON Web Tokens in our project.
+//Adapted from: ChatGPT in response to creating a jwt.js file for handling JSON Web Tokens in our project.
 
 import jwt from 'jsonwebtoken';
 

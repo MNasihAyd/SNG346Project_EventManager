@@ -1,4 +1,4 @@
-// This file was written by ChatGPT in response to creating an events route for handling event-related operations in our project.
+// Adapted from: ChatGPT in response to creating an events route for handling event-related operations in our project.
 
 import { getEvents, createEvent } from '../../../controllers/eventController.js';
 import { authenticate, authorize } from '../../../middlewares/authMiddleware.js';

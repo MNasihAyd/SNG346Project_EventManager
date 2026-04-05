@@ -1,4 +1,4 @@
-// This file was written by ChatGPT in response to creating a login route for handling user login in our project.
+// Adapted from: ChatGPT in response to creating a login route for handling user login in our project.
 
 import { login } from '../../../../controllers/authController.js';
 

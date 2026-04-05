@@ -1,4 +1,4 @@
-//this was written by ChatGPT in response to creating an authController.js file for handling user registration and login in our project.
+//Adapted from: ChatGPT in response to creating an authController.js file for handling user registration and login in our project.
 
 import prisma from '../prisma/client.js';
 import { generateToken } from '../utils/jwt.js';

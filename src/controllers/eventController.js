@@ -1,4 +1,4 @@
-// This file was written by ChatGPT in response to creating an eventController.js file for handling event-related operations in our project.
+// Adapted from: ChatGPT in response to creating an eventController.js file for handling event-related operations in our project.
 
 import prisma from '../prisma/client.js';
 

@@ -1,4 +1,4 @@
-// This file was written by ChatGPT in response to creating a client.js file for a Prisma connected to a PostgreSQL database
+// Adapted from: ChatGPT in response to creating a client.js file for a Prisma connected to a PostgreSQL database
 import "dotenv/config";
 import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";

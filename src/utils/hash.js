@@ -1,4 +1,4 @@
-//this was written by ChatGPT in response to creating a hash.js file for handling password hashing in our project.
+//Adapted from: ChatGPT in response to creating a hash.js file for handling password hashing in our project.
 
 import bcrypt from 'bcrypt';
 

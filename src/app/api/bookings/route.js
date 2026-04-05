@@ -1,4 +1,4 @@
-// This file was written by ChatGPT in response to creating a bookings route for handling event bookings in our project.
+// Adapted from: ChatGPT in response to creating a bookings route for handling event bookings in our project.
 
 import { createBooking, cancelBooking } from '../../../controllers/bookingController.js';
 import { authenticate } from '../../../middlewares/authMiddleware.js';

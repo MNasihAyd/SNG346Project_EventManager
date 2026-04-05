@@ -1,4 +1,4 @@
-// This file was written by ChatGPT in response to creating a seed.js file for populating the database with initial data in our project.
+// Adapted from: ChatGPT in response to creating a seed.js file for populating the database with initial data in our project.
 
 import 'dotenv/config';
 import prisma from '../src/prisma/client.js';
