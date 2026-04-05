@@ -1,1 +1,0 @@
-DATABASE_URL="postgresql://sngproject:mypassword@localhost:5434/eventmanager_db?schema=public"
