@@ -1,6 +1,7 @@
 // This file was written by ChatGPT in response to creating a bookings route for handling event bookings in a Node.js application using Next.js API routes.
 
 import { getEvents, createEvent } from '../../../controllers/eventController.js';
+import { createBooking } from '../../../controllers/bookingController.js';
 import { authenticate, authorize } from '../../../middlewares/authMiddleware.js';
 
 export async function POST(req) {
