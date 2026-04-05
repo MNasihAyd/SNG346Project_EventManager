@@ -53,7 +53,7 @@ src/
 ├── utils/          → Helper functions
 ```
 
-The file structure for the APIs were made according to lecture 6 page 19 of our SNG 346 lecture slides.
+The file structure for the APIs was made according to lecture 6 page 19 of our SNG 346 lecture slides.
 
 
 # Database Design
