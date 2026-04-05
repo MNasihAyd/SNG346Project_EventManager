@@ -170,18 +170,28 @@ http://localhost:3000
 
 ---
 
-## Authentication
+## Demo Run For Testing
 
 ### Register
 
 **POST** `/api/auth/register`
 
+Body:
+
 ```json
 {
-  "email": "test@test.com",
+  "email": "org1@test.com",
   "password": "123456",
-  "name": "Test User",
-  "role": "ATTENDEE"
+  "name": "Organiser One",
+  "role": "ORGANISER"
+}
+```
+
+Response:
+
+```json
+{
+  "token": "JWT_TOKEN"
 }
 ```
 
@@ -190,6 +200,15 @@ http://localhost:3000
 ### Login
 
 **POST** `/api/auth/login`
+
+Body:
+
+```json
+{
+  "email": "org1@test.com",
+  "password": "123456"
+}
+```
 
 Response:
 
@@ -207,6 +226,23 @@ Response:
 
 **GET** `/api/events`
 
+Response:
+
+```json
+[
+    {
+        "id": "cmnlvpc6q000kdktzrla5vk8u",
+        "title": "Event 1",
+        "description": "Description for event 1",
+        "dateTime": "2026-04-06T14:50:43.823Z",
+        "capacity": 8,
+        "organiserId": "cmnlvpc4m0006dktzxfhv1gw1",
+        "createdAt": "2026-04-05T14:50:43.826Z"
+    },
+    //all the events
+]
+```
+
 ---
 
 ### Create Event (Organiser Only)
@@ -216,37 +252,116 @@ Response:
 Headers:
 
 ```
-Authorization: Bearer TOKEN
+Authorization: Bearer JWT_TOKEN
 ```
 
 Body:
 
 ```json
 {
-  "title": "Event Title",
-  "description": "Event Description",
+  "title": "Test Event Title",
+  "description": "Test Event Description",
   "dateTime": "2026-04-05T10:00:00.000Z",
   "capacity": 10
 }
+```
+
+Response:
+
+```json
+
+{
+    "id": "cmnlw9rus00009ctz3tes1dca",
+    "title": "Test Event Title",
+    "description": "Test Event Description",
+    "dateTime": "2026-04-05T10:00:00.000Z",
+    "capacity": 10,
+    "organiserId": "cmnlvpw620000aktzdvvjbath",
+    "createdAt": "2026-04-05T15:06:37.252Z"
+}
+
 ```
 
 ---
 
 ### Get Single Event
 
-**GET** `/api/events/:id`
+**GET** `/api/events/:id` //Example /api/events/cmnlvrdge0002aktzzynd3dld
 
+Response:
+
+```json
+{
+    "id": "cmnlvrdge0002aktzzynd3dld",
+    "title": "Test Event",
+    "description": "Created by organiser",
+    "dateTime": "2026-04-10T10:00:00.000Z",
+    "capacity": 5,
+    "organiserId": "cmnlvpw620000aktzdvvjbath",
+    "createdAt": "2026-04-05T14:52:18.783Z"
+}
+```
 ---
 
 ### Update Event
 
-**PUT** `/api/events/:id`
+**PUT** `/api/events/:id` //Example /api/events/cmnlvrdge0002aktzzynd3dld
+
+Headers:
+
+```
+Authorization: Bearer JWT_TOKEN
+```
+
+Body:
+
+```json
+{
+  "title": "Updated Event Title",
+  "capacity": 10,
+  "dateTime": "2026-04-15T10:00:00.000Z",
+  "description": "An Updated Event"
+}
+```
+
+Response:
+
+```json
+
+{
+    "id": "cmnlw9rus00009ctz3tes1dca",
+    "title": "Updated Event Title",
+    "description": "An Updated Event",
+    "dateTime": "2026-04-15T10:00:00.000Z",
+    "capacity": 10,
+    "organiserId": "cmnlvpw620000aktzdvvjbath",
+    "createdAt": "2026-04-05T15:06:37.252Z"
+}
+
+```
 
 ---
 
 ### Delete Event
 
-**DELETE** `/api/events/:id`
+**DELETE** `/api/events/:id` //Example /api/events/cmnlvrdge0002aktzzynd3dld
+
+Headers:
+
+```
+Authorization: Bearer JWT_TOKEN
+```
+
+
+Response:
+
+```json
+
+{
+    "message": "Deleted successfully"
+}
+
+```
 
 ---
 
@@ -269,6 +384,95 @@ Body:
   "eventId": "EVENT_ID"
 }
 ```
+```json
+//Example
+{
+  "eventId": "cmnlw9rus00009ctz3tes1dca"
+}
+```
+
+Response:
+
+```json
+
+{
+    "id": "cmnlwadcd00019ctzvb9lh15e",
+    "userId": "cmnlvqed00001aktzkn1l9wk8",
+    "eventId": "cmnlw9rus00009ctz3tes1dca",
+    "bookedAt": "2026-04-05T15:07:05.101Z"
+}
+
+```
+
+---
+
+### Cancel Booking
+
+**DELETE** `/api/bookings`
+
+Headers:
+
+```
+Authorization: Bearer TOKEN
+```
+
+Body:
+
+```json
+{
+  "eventId": "EVENT_ID"
+}
+```
+```json
+//Example
+{
+  "eventId": "cmnlw9rus00009ctz3tes1dca"
+}
+```
+
+Response:
+
+```json
+
+{
+    "message": "Booking cancelled"
+}
+
+```
+
+---
+## Dashboard
+
+### See Dashboard
+
+**DELETE** `/api/events/:id/dashboard` //Example /api/events/cmnlvrdge0002aktzzynd3dld/dashboard
+
+Headers:
+
+```
+Authorization: Bearer TOKEN
+```
+
+
+Response:
+
+```json
+
+{
+    "id": "cmnlw9rus00009ctz3tes1dca",
+    "title": "Updated Event Title",
+    "capacity": 10,
+    "ticketsSold": 1,
+    "attendees": [
+        {
+            "id": "cmnlvqed00001aktzkn1l9wk8",
+            "name": "Attendee One",
+            "email": "att1@test.com"
+        }
+    ]
+}
+
+```
 
 ---
 
@@ -282,6 +486,7 @@ The API uses standard HTTP status codes:
 * 401 → Unauthorized
 * 403 → Forbidden
 * 404 → Not Found
+* 500 → Internal Server Error
 
 ---
 
@@ -303,14 +508,21 @@ The API uses standard HTTP status codes:
 
 After running seed:
 
+Seed will be completed with:
+- 10 organisers
+- 10 attendees
+- 12 events
+
+//Example Logins
+
 * Organiser:
 
-  * email: `org@test.com`
+  * email: `organiser2@test.com`
   * password: `123456`
 
 * Attendee:
 
-  * email: `user@test.com`
+  * email: `attendee2@test.com`
   * password: `123456`
 
 ---
@@ -321,16 +533,5 @@ After running seed:
 * Attendees can book events
 * Booking is limited by event capacity
 * Duplicate bookings are prevented
-
----
-
-# Conclusion
-
-This project demonstrates a fully functional backend system using modern technologies, following best practices such as:
-
-* RESTful API design
-* Separation of concerns
-* Authentication & authorization
-* Relational database modeling
 
 ---
