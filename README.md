@@ -1,36 +1,354 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Event Manager Backend (SNG346 Project)
 
-## Getting Started
+## Team Members
 
-First, run the development server:
+* Name: Eray Güler
+* Student ID: 2587343
+* Name: Muhammed Nasih Aydın
+* Student ID:
+* Name: Ata Sancaktar
+* Student ID:
+
+*(Add other team members if applicable)*
+
+---
+
+# Project Description
+
+Backend (Part 1):
+
+selected project:
+
+2.2 Option 2: Event Booking & Ticketing System
+
+The system provides:
+
+* User authentication (JWT-based)
+* Role-based authorization (Organiser / Attendee)
+* Event management
+* Ticket booking system
+
+---
+
+# Technologies Used
+
+* **Next.js (API Routes)** – Backend framework
+* **Prisma ORM (v7.6)** – Database management
+* **PostgreSQL (Docker)** – Database
+* **JWT (jsonwebtoken)** – Authentication
+* **bcrypt** – Password hashing
+
+---
+
+# Architecture Overview
+
+The projects backend architecture:
+
+```
+src/
+├── app/api/        → API routes
+├── controllers/    → Logic
+├── middlewares/    → Authentication & authorization
+├── prisma/         → Prisma client
+├── utils/          → Helper functions
+```
+
+### Key Concepts:
+
+* **Separation of Concerns**
+
+  * Routes → handle HTTP requests
+  * Controllers → handle logic
+  * Prisma → handles database
+
+* **Authentication**
+
+  * JWT tokens are generated on login
+  * Tokens are required for protected routes
+
+* **Authorization**
+
+  * Role-based access:
+
+    * ORGANISER → can create/manage events
+    * ATTENDEE → can book events
+
+---
+
+# Database Design
+
+### Models:
+
+### User
+
+* id
+* email
+* password
+* name
+* role (ORGANISER / ATTENDEE)
+
+### Event
+
+* id
+* title
+* description
+* dateTime
+* capacity
+* organiserId
+
+### Booking
+
+* id
+* userId
+* eventId
+
+### Relationships:
+
+* One User → Many Events (Organiser)
+* One User → Many Bookings
+* One Event → Many Bookings
+
+---
+
+# Setup Instructions
+
+## 1. Clone Repository
+
+```bash
+git clone <YOUR_REPO_LINK>
+```
+
+---
+
+## 2. Install Dependencies
+
+```bash
+npm install
+```
+
+---
+
+## 3. Start Database (Docker)
+
+```bash
+docker-compose up -d
+```
+
+---
+
+## 4. Configure Environment Variables
+
+Create `.env` file in root:
+
+```env
+DATABASE_URL=postgresql://sngproject:mypassword@localhost:5434/eventmanager_db?schema=public
+```
+
+---
+
+## 5. Generate Prisma Client
+
+```bash
+npx prisma generate
+```
+
+---
+
+## 6. Run Migrations
+
+```bash
+npx prisma migrate reset
+```
+
+---
+
+## 7. Seed Database
+
+```bash
+node prisma/seed.js
+```
+
+---
+
+## 8. Run Application
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Server runs at:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+# API Documentation
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Authentication
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Register
 
-## Deploy on Vercel
+**POST** `/api/auth/register`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```json
+{
+  "email": "test@test.com",
+  "password": "123456",
+  "name": "Test User",
+  "role": "ATTENDEE"
+}
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+### Login
+
+**POST** `/api/auth/login`
+
+Response:
+
+```json
+{
+  "token": "JWT_TOKEN"
+}
+```
+
+---
+
+## Events
+
+### Get All Events
+
+**GET** `/api/events`
+
+---
+
+### Create Event (Organiser Only)
+
+**POST** `/api/events`
+
+Headers:
+
+```
+Authorization: Bearer TOKEN
+```
+
+Body:
+
+```json
+{
+  "title": "Event Title",
+  "description": "Event Description",
+  "dateTime": "2026-04-05T10:00:00.000Z",
+  "capacity": 10
+}
+```
+
+---
+
+### Get Single Event
+
+**GET** `/api/events/:id`
+
+---
+
+### Update Event
+
+**PUT** `/api/events/:id`
+
+---
+
+### Delete Event
+
+**DELETE** `/api/events/:id`
+
+---
+
+## Bookings
+
+### Book Event
+
+**POST** `/api/bookings`
+
+Headers:
+
+```
+Authorization: Bearer TOKEN
+```
+
+Body:
+
+```json
+{
+  "eventId": "EVENT_ID"
+}
+```
+
+---
+
+# Error Handling
+
+The API uses standard HTTP status codes:
+
+* 200 → Success
+* 201 → Created
+* 400 → Bad Request
+* 401 → Unauthorized
+* 403 → Forbidden
+* 404 → Not Found
+
+---
+
+# Features Implemented
+
+* User registration & login
+* JWT authentication
+* Role-based authorization
+* Event creation & management
+* Ticket booking system
+* Capacity validation
+* Prisma relational models
+* Seed script for test data
+* Clean architecture (routes/controllers/middleware)
+
+---
+
+# Sample Seed Data
+
+After running seed:
+
+* Organiser:
+
+  * email: `org@test.com`
+  * password: `123456`
+
+* Attendee:
+
+  * email: `user@test.com`
+  * password: `123456`
+
+---
+
+# Notes
+
+* Only organisers can create events
+* Attendees can book events
+* Booking is limited by event capacity
+* Duplicate bookings are prevented
+
+---
+
+# Conclusion
+
+This project demonstrates a fully functional backend system using modern technologies, following best practices such as:
+
+* RESTful API design
+* Separation of concerns
+* Authentication & authorization
+* Relational database modeling
+
+---
