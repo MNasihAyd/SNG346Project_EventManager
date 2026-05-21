@@ -56,3 +56,14 @@ export const cancelBooking = async (userID, eventId) => {
 
   return { message: "Booking cancelled" };
 };
+
+// Gets all bookings for a specific user, including the event details
+export const getUserBookings = async (userId) => {
+  return await prisma.booking.findMany({
+    where: { userId },
+    include: { 
+      event: true // We need the event details to display them on the frontend
+    },
+    orderBy: { bookedAt: 'desc' }
+  });
+};

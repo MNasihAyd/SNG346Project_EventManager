@@ -1,6 +1,6 @@
 // Adapted from: ChatGPT in response to creating a bookings route for handling event bookings in our project.
 
-import { createBooking, cancelBooking } from '../../../controllers/bookingController.js';
+import { createBooking, cancelBooking, getUserBookings } from '../../../controllers/bookingController.js';
 import { authenticate } from '../../../middlewares/authMiddleware.js';
 
 //Event booking
@@ -46,5 +46,17 @@ export async function DELETE(req) {
   //Returns an error if the user is not authenticated or does not have the right role
   catch (err) {
     return Response.json({ error: err.message }, { status: 403 });
+  }
+}
+
+
+// Gets all bookings for the logged-in user
+export async function GET(req) {
+  try {
+    const user = authenticate(req);
+    const bookings = await getUserBookings(user.id);
+    return Response.json(bookings);
+  } catch (err) {
+    return Response.json({ error: err.message }, { status: 401 });
   }
 }
