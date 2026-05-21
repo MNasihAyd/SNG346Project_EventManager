@@ -46,7 +46,23 @@ export default function EventDashboard() {
         &larr; Back to My Events
       </Link>
       
-      <h1 className="text-3xl font-bold mb-2">{dashboard.title} - Dashboard</h1>
+      {/* --- START OF NEW CODE --- */}
+      <div className="flex justify-between items-center mb-2">
+        
+        {/* The Event Title */}
+        <h1 className="text-3xl font-bold">{dashboard.title} - Dashboard</h1>
+        
+        {/* The New Edit Button */}
+        <Link 
+          href={`/events/${dashboard.id}/edit`} 
+          className="bg-gray-100 text-gray-700 px-4 py-2 rounded border hover:bg-gray-200 transition font-medium flex items-center gap-2"
+        >
+          <span>✏️</span> Edit Event
+        </Link>
+
+      </div>
+      {/* --- END OF NEW CODE --- */}
+
       <p className="text-gray-500 mb-8">Event ID: {dashboard.id}</p>
 
       {/* Stats Cards */}

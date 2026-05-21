@@ -4,25 +4,31 @@
 import prisma from '../prisma/client.js';
 
 //Creates a booking for the given user for the given event
+//Creates a booking for the given user for the given event
 export const createBooking = async (userId, eventId) => {
   
-  //Finds the event by ID
+  // 1. Check if the event exists
   const event = await prisma.event.findUnique({ where: { id: eventId } });
-
-  //Error if the event does not exist
   if (!event) throw new Error("Event not found");
 
-  //Counts the number of bookings for the event
-  const count = await prisma.booking.count({
-    where: { eventId }
+  // 2. NEW: Check if the user already booked this event
+  const existingBooking = await prisma.booking.findUnique({
+    where: {
+      userId_eventId: {
+        userId: userId,
+        eventId: eventId
+      }
+    }
   });
+  if (existingBooking) throw new Error("You have already booked a ticket for this event.");
 
-  //Error if the event is full
+  // 3. Check if the event is full
+  const count = await prisma.booking.count({ where: { eventId } });
   if (count >= event.capacity) {
-    throw new Error("Event full");
+    throw new Error("Sorry, this event is full.");
   }
 
-  //Creates the booking
+  // 4. Create the booking
   return await prisma.booking.create({
     data: { userId, eventId }
   });
