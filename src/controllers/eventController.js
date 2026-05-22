@@ -2,9 +2,37 @@
 
 import prisma from '../prisma/client.js';
 
-//Gets all events from the database
-export const getEvents = async () => {
-  return await prisma.event.findMany();
+// Gets all events from the database, now supporting category and date range filters
+export const getEvents = async (filters = {}) => {
+  const { category, startDate, endDate } = filters;
+  let whereClause = {};
+
+  // Filter by category
+  if (category && category !== 'ALL') {
+    whereClause.category = category;
+  }
+
+  // Filter by Date Range
+  if (startDate || endDate) {
+    whereClause.dateTime = {};
+    
+    if (startDate) {
+      whereClause.dateTime.gte = new Date(startDate);
+    }
+    
+    if (endDate) {
+      // Add 1 day to the end date to include events that happen at any time on the end date
+      const end = new Date(endDate);
+      end.setDate(end.getDate() + 1);
+      whereClause.dateTime.lt = end;
+    }
+  }
+
+  // Gets the filtered events and orders them by upcoming date
+  return await prisma.event.findMany({
+    where: whereClause,
+    orderBy: { dateTime: 'asc' } 
+  });
 };
 
 //Gets an event by ID

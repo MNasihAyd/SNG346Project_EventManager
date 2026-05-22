@@ -17,12 +17,24 @@ model User {
   events    Event[]   @relation("OrganiserEvents")
 }
 
+enum Category {
+  TECHNOLOGY
+  BUSINESS
+  EDUCATION
+  ARTS
+  MUSIC
+  SPORTS
+  ENTERTAINMENT
+  OTHER
+}
+
 model Event {
   id          String    @id @default(cuid())
   title       String
   description String
   dateTime    DateTime
   capacity    Int
+  category    Category @default(OTHER)
   organiserId String
   createdAt   DateTime  @default(now())
   bookings    Booking[]

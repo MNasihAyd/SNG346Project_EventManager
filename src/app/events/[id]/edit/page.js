@@ -1,4 +1,3 @@
-// app/events/[id]/edit/page.js
 'use client';
 import { useState, useEffect } from 'react';
 import { fetchAPI } from '../../../../lib/api';
@@ -16,7 +15,8 @@ export default function EditEvent() {
     title: '',
     description: '',
     dateTime: '',
-    capacity: ''
+    capacity: '',
+    category: 'OTHER' // <-- NEW: Default fallback
   });
   const [fetching, setFetching] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -32,7 +32,6 @@ export default function EditEvent() {
       try {
         const data = await fetchAPI(`/events/${params.id}`);
         
-        // Convert the database ISO date to the format required by <input type="datetime-local">
         const dateObj = new Date(data.dateTime);
         const formattedDate = new Date(dateObj.getTime() - (dateObj.getTimezoneOffset() * 60000))
           .toISOString()
@@ -42,7 +41,8 @@ export default function EditEvent() {
           title: data.title,
           description: data.description,
           dateTime: formattedDate,
-          capacity: data.capacity
+          capacity: data.capacity,
+          category: data.category || 'OTHER' // <-- NEW: Load category from DB
         });
       } catch (err) {
         toast.error('Failed to load event details.');
@@ -63,6 +63,7 @@ export default function EditEvent() {
         ...formData,
         dateTime: new Date(formData.dateTime).toISOString(),
         capacity: parseInt(formData.capacity, 10),
+        category: formData.category // <-- NEW: Send category to API
       };
 
       await fetchAPI(`/events/${params.id}`, {
@@ -99,6 +100,25 @@ export default function EditEvent() {
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
             required
           />
+        </div>
+
+        {/* --- NEW CATEGORY DROPDOWN --- */}
+        <div>
+          <label className="block text-sm font-medium mb-1">Category</label>
+          <select
+            className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 bg-white"
+            value={formData.category}
+            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+          >
+            <option value="TECHNOLOGY">Technology</option>
+            <option value="BUSINESS">Business</option>
+            <option value="EDUCATION">Education</option>
+            <option value="ARTS">Arts</option>
+            <option value="MUSIC">Music</option>
+            <option value="SPORTS">Sports</option>
+            <option value="ENTERTAINMENT">Entertainment</option>
+            <option value="OTHER">Other</option>
+          </select>
         </div>
 
         <div>

@@ -14,11 +14,11 @@ export default function CreateEvent() {
     title: '',
     description: '',
     dateTime: '',
-    capacity: ''
+    capacity: '',
+    category: 'TECHNOLOGY' // <-- NEW: Added default category
   });
   const [submitting, setSubmitting] = useState(false);
 
-  // Protect route: Only Organisers can create events
   useEffect(() => {
     if (!loading && (!user || user.role !== 'ORGANISER')) {
       toast.error('Unauthorized. Only organisers can create events.');
@@ -34,11 +34,11 @@ export default function CreateEvent() {
 
     setSubmitting(true);
     try {
-      // Format data for Prisma
       const payload = {
         ...formData,
         dateTime: new Date(formData.dateTime).toISOString(),
         capacity: parseInt(formData.capacity, 10),
+        category: formData.category // <-- NEW: Send category to API
       };
 
       const newEvent = await fetchAPI('/events', {
@@ -74,6 +74,25 @@ export default function CreateEvent() {
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
             placeholder="e.g., Tech Meetup 2026"
           />
+        </div>
+
+        {/* --- NEW CATEGORY DROPDOWN --- */}
+        <div>
+          <label className="block text-sm font-medium mb-1">Category</label>
+          <select
+            className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 bg-white"
+            value={formData.category}
+            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+          >
+            <option value="TECHNOLOGY">Technology</option>
+            <option value="BUSINESS">Business</option>
+            <option value="EDUCATION">Education</option>
+            <option value="ARTS">Arts</option>
+            <option value="MUSIC">Music</option>
+            <option value="SPORTS">Sports</option>
+            <option value="ENTERTAINMENT">Entertainment</option>
+            <option value="OTHER">Other</option>
+          </select>
         </div>
 
         <div>

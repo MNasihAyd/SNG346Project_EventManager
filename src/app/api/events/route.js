@@ -3,10 +3,17 @@
 import { getEvents, createEvent } from '../../../controllers/eventController.js';
 import { authenticate, authorize } from '../../../middlewares/authMiddleware.js';
 
-//Gets all events
-export async function GET() {
-  const events = await getEvents();
-  //Returns the events as JSON
+// Gets all events, reading URL search params for filtering
+export async function GET(req) {
+  const { searchParams } = new URL(req.url);
+  const category = searchParams.get('category');
+  const startDate = searchParams.get('startDate');
+  const endDate = searchParams.get('endDate');
+
+  // Pass the extracted parameters to the controller
+  const events = await getEvents({ category, startDate, endDate });
+  
+  // Returns the events as JSON
   return Response.json(events);
 }
 
