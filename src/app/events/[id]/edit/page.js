@@ -20,6 +20,7 @@ export default function EditEvent() {
   });
   const [fetching, setFetching] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [minCapacity, setMinCapacity] = useState(1);
 
   useEffect(() => {
     if (!loading && (!user || user.role !== 'ORGANISER')) {
@@ -41,9 +42,13 @@ export default function EditEvent() {
           title: data.title,
           description: data.description,
           dateTime: formattedDate,
-          capacity: data.capacity,
-          category: data.category || 'OTHER' // <-- NEW: Load category from DB
+          capacity: data.capacity
         });
+
+        // NEW: Figure out how many tickets are sold and set the minimum allowed capacity
+        const ticketsSold = data._count?.bookings || 0;
+        setMinCapacity(ticketsSold > 0 ? ticketsSold : 1);
+
       } catch (err) {
         toast.error('Failed to load event details.');
         router.push('/organiser/events');
@@ -147,12 +152,18 @@ export default function EditEvent() {
             <label className="block text-sm font-medium mb-1">Capacity</label>
             <input
               type="number"
-              min="1"
+              min={minCapacity} // Dynamically locked to the tickets already sold
               className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
               value={formData.capacity}
               onChange={(e) => setFormData({ ...formData, capacity: e.target.value })}
               required
             />
+            {/* Show a helpful hint to the organiser if tickets are already sold */}
+            {minCapacity > 1 && (
+              <p className="text-xs text-gray-500 mt-1">
+                Minimum capacity is {minCapacity} based on tickets already sold.
+              </p>
+            )}
           </div>
         </div>
 

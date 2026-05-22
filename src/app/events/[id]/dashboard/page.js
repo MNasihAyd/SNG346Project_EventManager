@@ -59,6 +59,7 @@ export default function EventDashboard() {
   if (!dashboard) return null;
 
   const capacityPercentage = Math.round((dashboard.ticketsSold / dashboard.capacity) * 100);
+  const availableSpots = dashboard.capacity - dashboard.ticketsSold;
 
   return (
     <>
@@ -94,28 +95,35 @@ export default function EventDashboard() {
         <p className="text-gray-500 mb-8">Event ID: {dashboard.id}</p>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-          <div className="bg-white p-6 rounded-lg shadow border">
-            <p className="text-gray-500 text-sm font-medium uppercase tracking-wide">Total Capacity</p>
-            <p className="text-3xl font-bold mt-2">{dashboard.capacity}</p>
-          </div>
-          <div className="bg-white p-6 rounded-lg shadow border">
-            <p className="text-gray-500 text-sm font-medium uppercase tracking-wide">Tickets Sold</p>
-            <p className="text-3xl font-bold mt-2 text-blue-600">{dashboard.ticketsSold}</p>
-          </div>
-          <div className="bg-white p-6 rounded-lg shadow border">
-            <p className="text-gray-500 text-sm font-medium uppercase tracking-wide">Fill Rate</p>
-            <div className="mt-2 flex items-center gap-3">
-              <span className="text-3xl font-bold">{capacityPercentage}%</span>
-              <div className="flex-grow bg-gray-200 rounded-full h-2.5">
-                <div 
-                  className="bg-blue-600 h-2.5 rounded-full" 
-                  style={{ width: `${capacityPercentage}%` }}
-                ></div>
-              </div>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+        <div className="bg-white p-6 rounded-lg shadow border">
+          <p className="text-gray-500 text-sm font-medium uppercase tracking-wide">Total Capacity</p>
+          <p className="text-3xl font-bold mt-2">{dashboard.capacity}</p>
+        </div>
+        <div className="bg-white p-6 rounded-lg shadow border">
+          <p className="text-gray-500 text-sm font-medium uppercase tracking-wide">Tickets Sold</p>
+          <p className="text-3xl font-bold mt-2 text-blue-600">{dashboard.ticketsSold}</p>
+        </div>
+        
+        {/* NEW CARD: Available Spots */}
+        <div className="bg-white p-6 rounded-lg shadow border">
+          <p className="text-gray-500 text-sm font-medium uppercase tracking-wide">Available</p>
+          <p className="text-3xl font-bold mt-2 text-green-600">{availableSpots}</p>
+        </div>
+
+        <div className="bg-white p-6 rounded-lg shadow border">
+          <p className="text-gray-500 text-sm font-medium uppercase tracking-wide">Fill Rate</p>
+          <div className="mt-2 flex items-center gap-3">
+            <span className="text-3xl font-bold">{capacityPercentage}%</span>
+            <div className="flex-grow bg-gray-200 rounded-full h-2.5">
+              <div 
+                className="bg-blue-600 h-2.5 rounded-full" 
+                style={{ width: `${capacityPercentage}%` }}
+              ></div>
             </div>
           </div>
         </div>
+      </div>
 
         {/* Attendee Table */}
         <h2 className="text-2xl font-semibold mb-4">Attendee List</h2>

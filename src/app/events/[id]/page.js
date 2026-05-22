@@ -45,8 +45,19 @@ export default function EventDetails() {
         method: 'POST',
         body: JSON.stringify({ eventId: event.id }),
       });
+      
       toast.success('Successfully booked your ticket!');
-      // Optional: You could refresh the page or redirect to a "My Bookings" page here
+      
+      //we manually update the React state.
+      //This instantly subtracts 1 from the available spots on the screen.
+      setEvent((prevEvent) => ({
+        ...prevEvent,
+        _count: {
+          ...prevEvent._count,
+          bookings: prevEvent._count.bookings + 1
+        }
+      }));
+
     } catch (err) {
       toast.error(err.message || 'Failed to book the event.');
     } finally {
@@ -63,7 +74,12 @@ export default function EventDetails() {
         &larr; Back to Events
       </Link>
       
-      <h1 className="text-4xl font-bold mb-4">{event.title}</h1>
+      <div className="flex items-center gap-4 mb-4">
+        <h1 className="text-4xl font-bold">{event.title}</h1>
+        <span className="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full border border-blue-200">
+          {event.category || 'OTHER'}
+        </span>
+      </div>
       
       <div className="bg-blue-50 p-4 rounded-lg mb-6 text-blue-900 flex justify-between items-center">
         <div>
@@ -72,7 +88,10 @@ export default function EventDetails() {
         </div>
         <div className="text-right">
           <p className="font-semibold">Availability</p>
-          <p>{event.capacity} total spots</p>
+          <p className="font-bold text-lg text-green-600">
+            {event.capacity - event._count.bookings} spots left
+          </p>
+          <p className="text-sm text-gray-500">out of {event.capacity} total</p>
         </div>
       </div>
 
@@ -95,6 +114,13 @@ export default function EventDetails() {
           <p className="text-orange-600 bg-orange-50 p-4 rounded">
             Organisers cannot book tickets. Please log in as an Attendee.
           </p>
+        ) : event.capacity - event._count.bookings <= 0 ? (
+          <button
+            disabled
+            className="w-full bg-gray-400 text-white py-3 rounded-lg font-semibold text-lg cursor-not-allowed"
+          >
+            Sold Out
+          </button>
         ) : (
           <button
             onClick={handleBookEvent}

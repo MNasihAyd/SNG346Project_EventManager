@@ -116,31 +116,54 @@ export default function BrowseEvents() {
         </div>
       ) : (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {events.map((event) => (
-            <div key={event.id} className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col transition hover:shadow-lg">
-              <div className="p-6 flex-grow">
-                <div className="flex justify-between items-start mb-2">
-                  <h2 className="text-xl font-semibold">{event.title}</h2>
-                  <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded border border-blue-200 whitespace-nowrap ml-2">
-                    {event.category || 'OTHER'}
-                  </span>
+          {events.map((event) => {
+            // Calculate available spots safely based on the backend data
+            const bookingsCount = event._count?.bookings || 0;
+            const availableSpots = event.capacity - bookingsCount;
+            const isSoldOut = availableSpots <= 0;
+
+            return (
+              <div key={event.id} className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col transition hover:shadow-lg">
+                <div className="p-6 flex-grow">
+                  
+                  {/* Your Preserved Title and Category Badge */}
+                  <div className="flex justify-between items-start mb-2">
+                    <h2 className="text-xl font-semibold">{event.title}</h2>
+                    <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded border border-blue-200 whitespace-nowrap ml-2">
+                      {event.category || 'OTHER'}
+                    </span>
+                  </div>
+                  
+                  <p className="text-gray-600 mb-4 line-clamp-2">{event.description}</p>
+                  
+                  <div className="text-sm text-gray-500 space-y-2">
+                    <p>📅 {new Date(event.dateTime).toLocaleDateString()} at {new Date(event.dateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                    
+                    {/* NEW: Capacity & Spots Left Block */}
+                    <div className="flex justify-between items-center pt-3 mt-3 border-t bg-gray-50 p-2 rounded">
+                      <p>🎟️ Total Capacity: {event.capacity}</p>
+                      <p className={`font-bold ${isSoldOut ? 'text-red-500' : 'text-green-600'}`}>
+                        {isSoldOut ? 'Sold Out' : `${availableSpots} Spots Left`}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <p className="text-gray-600 mb-4 line-clamp-2">{event.description}</p>
-                <div className="text-sm text-gray-500 space-y-1">
-                  <p>📅 {new Date(event.dateTime).toLocaleDateString()} at {new Date(event.dateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
-                  <p>🎟️ Capacity: {event.capacity}</p>
+                
+                <div className="p-4 bg-gray-50 border-t">
+                  <Link 
+                    href={`/events/${event.id}`}
+                    className={`block w-full text-center py-2 rounded transition font-medium text-white ${
+                      isSoldOut 
+                        ? 'bg-gray-400 hover:bg-gray-500' // Make the button gray if sold out
+                        : 'bg-blue-600 hover:bg-blue-700' // Keep it blue if available
+                    }`}
+                  >
+                    {isSoldOut ? 'View Event (Full)' : 'View Details'}
+                  </Link>
                 </div>
               </div>
-              <div className="p-4 bg-gray-50 border-t">
-                <Link 
-                  href={`/events/${event.id}`}
-                  className="block w-full text-center bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
-                >
-                  View Details
-                </Link>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

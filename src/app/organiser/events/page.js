@@ -45,20 +45,32 @@ export default function MyEvents() {
         </p>
       ) : (
         <div className="grid gap-4 md:grid-cols-2">
-          {myEvents.map((event) => (
-            <div key={event.id} className="bg-white p-5 rounded-lg shadow border flex justify-between items-center">
-              <div>
-                <h2 className="text-xl font-semibold">{event.title}</h2>
-                <p className="text-sm text-gray-500">{new Date(event.dateTime).toLocaleDateString()}</p>
+          {myEvents.map((event) => {
+            // Safely calculate available spots (defaulting to 0 if _count is somehow missing)
+            const bookingsCount = event._count?.bookings || 0;
+            const availableSpots = event.capacity - bookingsCount;
+
+            return (
+              <div key={event.id} className="bg-white p-5 rounded-lg shadow border flex justify-between items-center transition hover:shadow-md">
+                <div>
+                  <h2 className="text-xl font-semibold mb-1">{event.title}</h2>
+                  <div className="flex gap-4 text-sm text-gray-500">
+                    <p>📅 {new Date(event.dateTime).toLocaleDateString()}</p>
+                    <p>👥 {event.capacity} Total Capacity</p>
+                    <p className={`font-medium ${availableSpots <= 0 ? 'text-red-500' : 'text-green-600'}`}>
+                      🎟️ {availableSpots} Spots Left
+                    </p>
+                  </div>
+                </div>
+                <Link 
+                  href={`/events/${event.id}/dashboard`}
+                  className="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-2 rounded hover:bg-blue-100 transition whitespace-nowrap ml-4"
+                >
+                  Dashboard &rarr;
+                </Link>
               </div>
-              <Link 
-                href={`/events/${event.id}/dashboard`}
-                className="bg-blue-100 text-blue-700 px-4 py-2 rounded hover:bg-blue-200 transition"
-              >
-                View Dashboard
-              </Link>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

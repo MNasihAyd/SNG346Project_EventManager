@@ -28,16 +28,28 @@ export const getEvents = async (filters = {}) => {
     }
   }
 
-  // Gets the filtered events and orders them by upcoming date
+  // Gets the filtered events, counts the bookings, and orders them by upcoming date
   return await prisma.event.findMany({
     where: whereClause,
+    include: {
+      _count: {
+        select: { bookings: true } 
+      }
+    },
     orderBy: { dateTime: 'asc' } 
   });
 };
 
 //Gets an event by ID
 export const getEvent = async (id) => {
-  return await prisma.event.findUnique({ where: { id } });
+  return await prisma.event.findUnique({ 
+    where: { id },
+    include: {
+      _count: {
+        select: { bookings: true }
+      }
+    }
+  });
 };
 
 //Creates an event with the given data and the user as the organiser
@@ -54,11 +66,29 @@ export const createEvent = async (data, user) => {
 
 //Updates an event with the given ID and the Data
 export const updateEvent = async (id, data, user) => {
-  const event = await prisma.event.findUnique({ where: { id } });
+  // Fetch the event AND count how many bookings it currently has
+  const event = await prisma.event.findUnique({ 
+    where: { id },
+    include: {
+      _count: {
+        select: { bookings: true }
+      }
+    }
+  });
+
+  //Error if the event doesn't exist
+  if (!event) {
+    throw new Error("Event not found");
+  }
 
   //Error if the user is not the orginizer
   if (event.organiserId !== user.id) {
     throw new Error("Unauthorized");
+  }
+
+  // NEW: Prevent capacity from being set lower than tickets already sold
+  if (data.capacity !== undefined && data.capacity < event._count.bookings) {
+    throw new Error(`Capacity cannot be lower than the tickets already sold (${event._count.bookings}).`);
   }
 
   //Updates the event with the new data
