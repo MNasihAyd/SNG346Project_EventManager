@@ -16,7 +16,7 @@ export default function EditEvent() {
     description: '',
     dateTime: '',
     capacity: '',
-    category: 'OTHER' // <-- NEW: Default fallback
+    category: 'OTHER' 
   });
   const [fetching, setFetching] = useState(true);
   const [submitting, setSubmitting] = useState(false);
