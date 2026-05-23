@@ -1,3 +1,5 @@
+// Adapted from: ChatGPT in response to creating a create event page for our event booking application using Next.js and React.
+
 'use client';
 import { useState, useEffect } from 'react';
 import { fetchAPI } from '../../../lib/api';

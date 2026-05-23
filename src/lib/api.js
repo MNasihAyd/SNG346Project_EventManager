@@ -1,6 +1,6 @@
-// lib/api.js
+// Adapted from: ChatGPT in response to creating a utility function for making API calls in our event booking application using Next.js and React.
 
-const API_BASE_URL = '/api'; // Assuming Next.js proxies or backend runs on the same domain
+const API_BASE_URL = '/api'; 
 
 export async function fetchAPI(endpoint, options = {}) {
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;

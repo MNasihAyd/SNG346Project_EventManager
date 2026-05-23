@@ -1,4 +1,5 @@
-// app/register/page.js
+// Adapted from: ChatGPT in response to creating a registration page for our event booking application using Next.js and React.
+
 'use client';
 import { useState } from 'react';
 import { fetchAPI } from '../../lib/api';

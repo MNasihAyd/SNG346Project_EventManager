@@ -1,3 +1,5 @@
+// Adapted from: ChatGPT in response to creating a dashboard page for our event booking application using Next.js and React.
+
 'use client';
 import { useAuth } from '../../context/AuthContext';
 import { useRouter } from 'next/navigation';

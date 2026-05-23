@@ -1,4 +1,5 @@
-// components/Navbar.js
+// Adapted from: ChatGPT in response to creating a Navbar component for our event booking application using Next.js and React.
+
 'use client';
 import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
@@ -13,7 +14,7 @@ export default function Navbar() {
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
               <Link href="/" className="text-xl font-bold text-blue-600">
-                EventSphere
+                Event346
               </Link>
             </div>
             <div className="ml-6 flex space-x-8">
