@@ -102,13 +102,25 @@ export const updateEvent = async (id, data, user) => {
 export const deleteEvent = async (id, user) => {
   const event = await prisma.event.findUnique({ where: { id } });
 
-  //Error if the user is not the orginizer
+  // Error if the event does not exist
+  if (!event) {
+    throw new Error("Event not found");
+  }
+
+  // Error if the user is not the organiser
   if (event.organiserId !== user.id) {
     throw new Error("Unauthorized");
   }
 
-  //Deletes the event
-  await prisma.event.delete({ where: { id } });
+  // FIX: Delete all bookings attached to this event first
+  await prisma.booking.deleteMany({ 
+    where: { eventId: id } 
+  });
+
+  // Now it is safe to delete the event
+  await prisma.event.delete({ 
+    where: { id } 
+  });
 };
 
 export const getEventDashboard = async (eventId, user) => {

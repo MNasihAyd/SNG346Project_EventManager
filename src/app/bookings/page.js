@@ -14,10 +14,12 @@ export default function MyBookings() {
   
   const [bookings, setBookings] = useState([]);
   const [fetching, setFetching] = useState(true);
+  
+  // States for handling the cancelation and modal
   const [cancelingId, setCancelingId] = useState(null);
+  const [bookingToCancel, setBookingToCancel] = useState(null); // Stores the ID of the event when modal is open
 
   useEffect(() => {
-    // Protect route: Ensure the user is logged in
     if (!loading && !user) {
       router.push('/login');
       return;
@@ -37,23 +39,24 @@ export default function MyBookings() {
     if (user) fetchBookings();
   }, [user, loading, router]);
 
-  const handleCancelBooking = async (eventId) => {
-    if (!window.confirm("Are you sure you want to cancel this booking?")) return;
-
-    setCancelingId(eventId);
+  // Actually performs the deletion when they click "Confirm" in the modal
+  const confirmCancelBooking = async () => {
+    if (!bookingToCancel) return;
+    
+    setCancelingId(bookingToCancel);
     try {
       await fetchAPI('/bookings', {
         method: 'DELETE',
-        body: JSON.stringify({ eventId }),
+        body: JSON.stringify({ eventId: bookingToCancel }),
       });
       
-      // Remove the canceled booking from the UI immediately
-      setBookings((prev) => prev.filter((booking) => booking.eventId !== eventId));
+      setBookings((prev) => prev.filter((booking) => booking.eventId !== bookingToCancel));
       toast.success('Booking canceled successfully');
     } catch (err) {
       toast.error(err.message || 'Failed to cancel booking');
     } finally {
       setCancelingId(null);
+      setBookingToCancel(null); // Close the modal
     }
   };
 
@@ -91,15 +94,44 @@ export default function MyBookings() {
               
               <div className="flex justify-end border-t pt-4 mt-2">
                 <button
-                  onClick={() => handleCancelBooking(booking.eventId)}
+                  // Instead of window.confirm, just open the modal by setting this state
+                  onClick={() => setBookingToCancel(booking.eventId)}
                   disabled={cancelingId === booking.eventId}
-                  className="text-red-600 hover:text-red-800 hover:bg-red-50 px-4 py-2 rounded transition disabled:opacity-50"
+                  className="text-red-600 hover:text-red-800 hover:bg-red-50 px-4 py-2 rounded transition disabled:opacity-50 font-medium"
                 >
                   {cancelingId === booking.eventId ? 'Canceling...' : 'Cancel Ticket'}
                 </button>
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* --- CUSTOM CONFIRMATION MODAL --- */}
+      {bookingToCancel && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6 animate-in fade-in zoom-in-95 duration-200">
+            <h3 className="text-xl font-bold mb-3 text-gray-900">Cancel Booking?</h3>
+            <p className="text-gray-600 mb-6">
+              Are you sure you want to cancel this booking? This action cannot be undone and your ticket will be lost.
+            </p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setBookingToCancel(null)}
+                disabled={cancelingId === bookingToCancel}
+                className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded transition font-medium"
+              >
+                Keep Ticket
+              </button>
+              <button
+                onClick={confirmCancelBooking}
+                disabled={cancelingId === bookingToCancel}
+                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition font-medium disabled:opacity-50"
+              >
+                {cancelingId === bookingToCancel ? 'Canceling...' : 'Confirm Cancel'}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
