@@ -452,7 +452,7 @@ Response:
 
 ### See Dashboard
 
-**DELETE** `/api/events/:id/dashboard` //Example /api/events/cmnlvrdge0002aktzzynd3dld/dashboard
+**GET** `/api/events/:id/dashboard` //Example /api/events/cmnlvrdge0002aktzzynd3dld/dashboard
 
 Headers:
 
