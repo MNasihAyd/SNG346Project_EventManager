@@ -6,8 +6,11 @@ import Navbar from '../components/Navbar';
 import './globals.css';
 
 export const metadata = {
-  title: 'Event Management System',
-  description: 'Book and manage events easily.',
+  title: 'Event346 - Event Management System',
+  description: 'Host, discover, and book tickets for your favorite events.',
+  icons: {
+    icon: '/event346logo.png',
+  },
 };
 
 export default function RootLayout({ children }) {

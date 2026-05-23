@@ -2,6 +2,7 @@
 
 'use client';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useAuth } from '../context/AuthContext';
 
 export default function Navbar() {
@@ -13,8 +14,18 @@ export default function Navbar() {
         <div className="flex justify-between h-16">
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
-              <Link href="/" className="text-xl font-bold text-blue-600">
-                Event346
+              <Link href="/" className="flex items-center gap-3 transition hover:opacity-90">
+                <Image 
+                  src="/event346logo.png" 
+                  alt="Event346 Logo" 
+                  width={40} 
+                  height={40} 
+                  className="w-10 h-10 object-contain"
+                  priority
+                />
+                <span className="text-2xl font-bold text-blue-600 tracking-tight">
+                  Event346
+                </span>
               </Link>
             </div>
             <div className="ml-6 flex space-x-8">
