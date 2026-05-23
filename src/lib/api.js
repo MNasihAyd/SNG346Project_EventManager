@@ -1,4 +1,4 @@
-// Adapted from: ChatGPT in response to creating a utility function for making API calls in our event booking application using Next.js and React.
+// Adapted from: Gemini in response to creating a utility function for making API calls in our event booking application using Next.js and React.
 
 const API_BASE_URL = '/api'; 
 

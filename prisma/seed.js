@@ -5,9 +5,9 @@ import prisma from '../src/prisma/client.js';
 import { hashPassword } from '../src/utils/hash.js';
 
 async function main() {
-  const password = await hashPassword("123456");
+  const password = await hashPassword("123");
 
-  // Clear existing data (optional but recommended for reset)
+  // Clear existing data
   await prisma.booking.deleteMany();
   await prisma.event.deleteMany();
   await prisma.user.deleteMany();
@@ -16,7 +16,7 @@ async function main() {
   // Create Organisers
   // -----------------------------
   const organisers = [];
-  for (let i = 1; i <= 10; i++) {
+  for (let i = 1; i <= 5; i++) {
     const organiser = await prisma.user.create({
       data: {
         email: `organiser${i}@test.com`,
@@ -32,7 +32,7 @@ async function main() {
   // Create Attendees
   // -----------------------------
   const attendees = [];
-  for (let i = 1; i <= 10; i++) {
+  for (let i = 1; i <= 25; i++) {
     const attendee = await prisma.user.create({
       data: {
         email: `attendee${i}@test.com`,
@@ -51,16 +51,19 @@ async function main() {
 
   for (let i = 1; i <= 12; i++) {
     // Pick a random organiser
-    const randomOrganiser =
-      organisers[Math.floor(Math.random() * organisers.length)];
+    const randomOrganiser = organisers[Math.floor(Math.random() * organisers.length)];
+
+    const category = ['TECHNOLOGY', 'ARTS', 'MUSIC', 'SPORTS', 'BUSINESS', 'EDUCATION', 'ARTS', 'MUSIC', 'SPORTS', 'ENTERTAINMENT', 'OTHER'][Math.floor(Math.random() * 11)];
 
     const event = await prisma.event.create({
       data: {
         title: `Event ${i}`,
-        description: `Description for event ${i}`,
+        description: `Description for event ${i}\nEvent organised by ${randomOrganiser.name}.\nEvent details and information go here.`,
         dateTime: new Date(Date.now() + i * 86400000), // future dates
-        capacity: 5 + Math.floor(Math.random() * 10),
+        capacity: 2 + Math.floor(Math.random() * 10),
         organiserId: randomOrganiser.id,
+        // Randomly assign a category to each event
+        category: category,
       },
     });
 
@@ -100,6 +103,7 @@ async function main() {
   console.log(`- ${attendees.length} attendees`);
   console.log(`- ${events.length} events`);
 }
+
 
 main()
   .catch((e) => {

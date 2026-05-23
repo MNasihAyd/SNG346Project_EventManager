@@ -1,4 +1,4 @@
-// Adapted from: ChatGPT in response to creating a Navbar component for our event booking application using Next.js and React.
+// Adapted from: Gemini in response to creating a Navbar component for our event booking application using Next.js and React.
 
 'use client';
 import Link from 'next/link';

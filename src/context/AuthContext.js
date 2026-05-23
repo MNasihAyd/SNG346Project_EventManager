@@ -1,4 +1,4 @@
-// Adapted from: ChatGPT in response to creating an authentication context for our event booking application using Next.js and React.
+// Adapted from: Gemini in response to creating an authentication context for our event booking application using Next.js and React.
 
 'use client';
 import { createContext, useContext, useState, useEffect } from 'react';

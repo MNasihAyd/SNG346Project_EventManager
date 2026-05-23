@@ -1,4 +1,4 @@
-// Adapted from: ChatGPT in response to creating a browse events page for our event booking application using Next.js and React.
+// Adapted from: Gemini in response to creating a browse events page for our event booking application using Next.js and React.
 
 'use client';
 import { useState, useEffect } from 'react';
@@ -136,7 +136,7 @@ export default function BrowseEvents() {
                     </span>
                   </div>
                   
-                  <p className="text-gray-600 mb-4 line-clamp-2">{event.description}</p>
+                  <p className="text-gray-600 mb-4 line-clamp-3 whitespace-pre-line">{event.description}</p>
                   
                   <div className="text-sm text-gray-500 space-y-2">
                     <p>📅 {new Date(event.dateTime).toLocaleDateString()} at {new Date(event.dateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>

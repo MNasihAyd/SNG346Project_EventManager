@@ -1,4 +1,7 @@
 -- CreateEnum
+CREATE TYPE "Category" AS ENUM ('TECHNOLOGY', 'BUSINESS', 'EDUCATION', 'ARTS', 'MUSIC', 'SPORTS', 'ENTERTAINMENT', 'OTHER');
+
+-- CreateEnum
 CREATE TYPE "Role" AS ENUM ('ORGANISER', 'ATTENDEE');
 
 -- CreateTable
@@ -20,6 +23,7 @@ CREATE TABLE "Event" (
     "description" TEXT NOT NULL,
     "dateTime" TIMESTAMP(3) NOT NULL,
     "capacity" INTEGER NOT NULL,
+    "category" "Category" NOT NULL DEFAULT 'OTHER',
     "organiserId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
