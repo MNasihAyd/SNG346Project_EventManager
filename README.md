@@ -592,6 +592,24 @@ http://localhost:3000
 
 ---
 
+## 4. Stop and Continue (if necessary)
+
+After the build
+
+To stop the server:
+
+```
+Ctrl + C
+```
+
+To run it back again:
+
+```bash
+docker-compose up
+```
+
+---
+
 # Testing the App
 
 These logins can be used to test the app functionalites:
