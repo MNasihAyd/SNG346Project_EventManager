@@ -11,5 +11,19 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      # Use 'db' as the host, and '5432' as the internal port
+      - DATABASE_URL=postgresql://sngproject:mypassword@db:5432/eventmanager_db?schema=public
+      - JWT_SECRET=supersecret123
+    depends_on:
+      - db
+
 volumes:
   postgres_data:
