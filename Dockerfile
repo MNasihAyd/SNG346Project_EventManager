@@ -2,44 +2,34 @@
 
 FROM node:22-alpine AS base
 
-FROM base AS deps
-# Install libc6-compat for Next.js and openssl for Prisma
-RUN apk add --no-cache libc6-compat openssl
-WORKDIR /app
-COPY package.json package-lock.json* ./
-RUN npm ci
-
 FROM base AS builder
-RUN apk add --no-cache openssl
+RUN apk add --no-cache openssl libc6-compat
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
-# Generate the Prisma client before building the Next.js app
+COPY package*.json ./
+# Install all dependencies required for the build
+RUN npm install
+COPY prisma ./prisma/
 RUN npx prisma generate
+COPY . .
+ENV JWT_SECRET=dummy_secret_for_build
 RUN npm run build
 
 FROM base AS runner
-RUN apk add --no-cache openssl
+RUN apk add --no-cache openssl libc6-compat
 WORKDIR /app
 ENV NODE_ENV=production
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
+# Copy the compiled application and necessary config files
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
-# Copy the entire prisma directory for runtime engine requirements
 COPY --from=builder /app/prisma ./prisma
 
-# Set correct permissions for the prerender cache
-RUN mkdir .next
-RUN chown nextjs:nodejs .next
+# Install ONLY production dependencies to keep the image small
+RUN npm install --omit=dev
 
-# The standalone output requires the next.config.ts update mentioned above
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-USER nextjs
 EXPOSE 3000
 ENV PORT=3000
 
-CMD ["node", "server.js"]
+# Execute the database push, seed the data, and start the production server
+CMD npx prisma db push && node prisma/seed.js && npm run start
