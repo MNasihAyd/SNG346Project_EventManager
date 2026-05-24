@@ -166,6 +166,11 @@ async function main() {
     console.log(`- "${event.title}": ${successCount}/${event.capacity} spots filled.`);
   }
 
+  console.log(`\n${organisers.length} organizers`);
+  console.log(`${attendees.length} attendees`);
+  console.log(`${events.length} events`);
+  console.log(`Created`);
+
   console.log("\n✅ Database Seed Completed Successfully!");
   console.log(`Login as: organiser1@test.com / Pass: 123 to see your specific test events.`);
   console.log(`Login as: attendee1@test.com / Pass: 123 to test the attendee dashboard.`);

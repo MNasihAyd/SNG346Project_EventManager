@@ -97,7 +97,7 @@ The file structure for the APIs was made according to lecture 6 page 19 of our S
 
 ---
 
-# Setup Instructions
+# Setup Instructions for Part 1 (Backend)
 
 ## 1. Clone Repository
 
@@ -131,6 +131,8 @@ Create `.env` file in root:
 DATABASE_URL="postgresql://sngproject:mypassword@localhost:5434/eventmanager_db?schema=public"
 
 JWT_SECRET=supersecret123
+
+NODE_ENV="production"
 ```
 
 ---
@@ -518,7 +520,7 @@ After running seed:
 Seed will be completed with:
 - 5 organisers
 - 25 attendees
-- 12 events
+- 11 events
 
 //Example Logins
 
@@ -540,5 +542,77 @@ Seed will be completed with:
 * Attendees can book events
 * Booking is limited by event capacity
 * Duplicate bookings are prevented
+
+---
+
+# Setup Instructions for Part 2 (Frontend and Deployment)
+
+## 1. Clone Repository
+
+```bash
+git clone git@github.com:MNasihAyd/SNG346Project_EventManager.git
+```
+
+---
+
+
+## 2. Configure Environment Variables
+
+Create `.env` file in root:
+
+```env
+DATABASE_URL="postgresql://sngproject:mypassword@localhost:5434/eventmanager_db?schema=public"
+
+JWT_SECRET=supersecret123
+
+NODE_ENV="production"
+```
+
+---
+
+## 3. Wipe Out Old Database (to clean up)
+
+```bash
+docker-compose down -v
+```
+
+---
+
+## 4. Build the App
+
+```bash
+docker-compose up --build
+```
+
+Server runs at:
+
+```
+http://localhost:3000
+```
+
+---
+
+# Testing the App
+
+These logins can be used to test the app functionalites:
+
+* Organiser:
+
+  * email: `organiser1@test.com`
+  * password: `123`
+
+Organiser1 has 3 events: one of them is full, one is filled 75% with 15 attendees and last one is filled 10%,
+Other organisers have two events each with random amounts of attendees,
+All organisers can be used to test the organiser functionalites 
+
+* Attendee:
+
+  * email: `attendee1@test.com`
+  * password: `123`
+
+There are 25 attendees, and all of them has random bookings, 
+Any of them can be used to test the attendee functionalites
+
+For both user type new sign ins can be done to test as well
 
 ---
