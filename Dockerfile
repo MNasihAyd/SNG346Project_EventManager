@@ -24,12 +24,9 @@ COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/prisma ./prisma
-
-# Install ONLY production dependencies to keep the image small
-RUN npm install --omit=dev
+COPY --from=builder /app/prisma.config.ts ./
 
 EXPOSE 3000
-ENV PORT=3000
 
 # Execute the database push, seed the data, and start the production server
 CMD npx prisma db push && node prisma/seed.js && npm run start
