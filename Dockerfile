@@ -1,6 +1,6 @@
 # Adapted from Google Gemini
 
-FROM node:18-alpine AS base
+FROM node:22-alpine AS base
 
 FROM base AS deps
 # Install libc6-compat for Next.js and openssl for Prisma
