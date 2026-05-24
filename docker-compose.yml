@@ -1,9 +1,4 @@
-# Improved using Gemini in response to improving Docker Compose.
-
-version: '3.8'
-
 services:
-  # Container 1: The PostgreSQL Database (Restored to your exact settings)
   db:
     image: postgres:15
     restart: always
@@ -16,18 +11,19 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  # Container 2: Your Next.js App
-  app:
-    build: .
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
     ports:
       - "3000:3000"
     environment:
+      # Use 'db' as the host, and '5432' as the internal port
       - DATABASE_URL=postgresql://sngproject:mypassword@db:5432/eventmanager_db?schema=public
       - JWT_SECRET=supersecret123
     depends_on:
       - db
-    restart: on-failure
 
-# Your Restored Volume
 volumes:
   postgres_data:
