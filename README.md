@@ -2,6 +2,20 @@
 
 # Event Manager Backend (SNG346 Project)
 
+### For Part 2 Submission
+
+
+The link to our GitHub repository: https://github.com/MNasihAyd/SNG346Project_EventManager
+
+Also in SSH: git@github.com:MNasihAyd/SNG346Project_EventManager.git
+
+CLI: gh repo clone MNasihAyd/SNG346Project_EventManager
+
+The hash of the commit corresponding to our submission is: 381ed0e4f6e9a1b13e8d0d34f4357fa06c76105d
+
+---
+
+
 ## Team Members
 
 * Name: Eray Güler
