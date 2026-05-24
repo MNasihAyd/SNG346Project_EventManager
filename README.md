@@ -516,21 +516,21 @@ The API uses standard HTTP status codes:
 After running seed:
 
 Seed will be completed with:
-- 10 organisers
-- 10 attendees
+- 5 organisers
+- 25 attendees
 - 12 events
 
 //Example Logins
 
 * Organiser:
 
-  * email: `organiser2@test.com`
-  * password: `123456`
+  * email: `organiser1@test.com`
+  * password: `123`
 
 * Attendee:
 
-  * email: `attendee2@test.com`
-  * password: `123456`
+  * email: `attendee1@test.com`
+  * password: `123`
 
 ---
 
