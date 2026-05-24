@@ -25,6 +25,6 @@ RUN npm run build
 # 8. Open port 3000
 EXPOSE 3000
 
-# 9. THE TA MAGIC COMMAND: 
+# 9. The last step is to run the app. This command will push the Prisma schema to the database, run the seed script, and then start the Next.js server.: 
 # Pushes the schema to the new DB, runs the seed file, and starts the app.
 CMD npx prisma db push && node prisma/seed.js && npm run start
