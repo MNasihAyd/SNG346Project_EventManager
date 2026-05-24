@@ -564,8 +564,6 @@ Create `.env` file in root:
 DATABASE_URL="postgresql://sngproject:mypassword@localhost:5434/eventmanager_db?schema=public"
 
 JWT_SECRET=supersecret123
-
-NODE_ENV="production"
 ```
 
 ---
